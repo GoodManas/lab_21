@@ -14,6 +14,7 @@ from ui.main2 import Ui_Main
 
 
 
+
 class Register(QMainWindow):
     def __init__(self):
         super(Register, self).__init__()
@@ -23,12 +24,27 @@ class Register(QMainWindow):
         self.ui.pushButton.clicked.connect(self.onClicked)
         self.ui.pushButton_2.clicked.connect(self.end)
 
+    def open_ui_auth(self):
+        
+        dialog = QDialog(self)  
+        self.dialog = Ui_Auth()  
+        self.dialog.setupUi(dialog)
 
+    def end(self):
+        os.system('cls' if os.name == 'nt' else 'clear')
+        self.close()
 
-
-
-
-
+    def onClicked(self):
+        login = self.ui.lineEdit.text()
+        password = self.ui.lineEdit_2.text()
+        data = QwerSql().auth(login,password)
+        print('Тест. Получено: ', data)
+        
+        if data:
+            print('Тест. Open Window')
+            self.open_ui_auth()
+        else:
+            QMessageBox.about(self,'Ошибка аутентификации', 'Неверно введен логин или пароль:')
 
 
 
