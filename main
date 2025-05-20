@@ -1,0 +1,39 @@
+import sys
+import os
+import MySQLdb as mdb
+
+from PySide6 import QtWidgets, QtCore, QtGui
+from PySide6.QtWidgets import QApplication, QMainWindow, QDialog, QWidget
+from PySide6.QtWidgets import QMessageBox
+from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtSql import QSqlDatabase, QSqlTableModel
+from qwerclass import *
+
+from ui.auth import Ui_Auth
+from ui.main2 import Ui_Main
+
+
+
+class Register(QMainWindow):
+    def __init__(self):
+        super(Register, self).__init__()
+        self.ui = Ui_Main()
+        self.ui.setupUi(self)
+
+        self.ui.pushButton.clicked.connect(self.onClicked)
+        self.ui.pushButton_2.clicked.connect(self.end)
+
+
+
+
+
+
+
+
+
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    window = Register()
+    window.show()   
+    sys.exit(app.exec())
