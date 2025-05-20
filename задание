@@ -118,3 +118,66 @@ INSERT INTO AppointmentServices (AppointmentID, ServiceID) VALUES
 (4,1), -- Прием 4: Консультация терапевта
 (4,2); -- Прием 4: Анализ крови
 
+
+две ХП 
+
+-- Хранимая процедура 1: Информация о пациенте, приеме, услугах и общей стоимости
+
+DELIMITER //
+CREATE PROCEDURE PatientAppointmentSummary(IN patient_id INT)
+BEGIN
+    SELECT
+        p.Photo,
+        p.LastName,
+        p.FirstName,
+        p.Email,
+        p.BirthDate,
+        a.AppointmentDate,
+        COUNT(DISTINCT aps.ServiceID) AS NumberOfServices,  -- Подсчет уникальных услуг
+        SUM(s.Price) AS TotalServiceCost
+    FROM
+        Patients p
+    JOIN
+        Appointments a ON p.PatientID = a.PatientID
+    LEFT JOIN  -- Используем LEFT JOIN, чтобы учесть приемы, где нет оказанных услуг
+        AppointmentServices aps ON a.AppointmentID = aps.AppointmentID
+    LEFT JOIN
+        Services s ON aps.ServiceID = s.ServiceID
+    WHERE
+        p.PatientID = patient_id  -- Фильтр по ID пациента
+    GROUP BY
+        p.PatientID, a.AppointmentID   -- Группировка по пациенту и приему для корректного подсчета
+    ORDER BY
+        a.AppointmentDate;  -- Сортировка по дате приема
+END //
+DELIMITER ;
+
+-- Хранимая процедура 2: Информация об услугах, рецепте и диагнозе для конкретного пациента и даты приема
+
+DELIMITER //
+CREATE PROCEDURE AppointmentDetails(IN patient_id INT, IN appointment_date DATETIME)
+BEGIN
+    SELECT
+        s.ServiceName,
+        s.Price,
+        a.Prescription,
+        a.Diagnosis
+    FROM
+        Appointments a
+    JOIN
+        AppointmentServices aps ON a.AppointmentID = aps.AppointmentID
+    JOIN
+        Services s ON aps.ServiceID = s.ServiceID
+    WHERE
+        a.PatientID = patient_id AND a.AppointmentDate = appointment_date;
+END //
+DELIMITER ;
+
+-- Примеры использования
+
+-- ХП1: Для пациента с ID = 1
+CALL PatientAppointmentSummary(1);
+
+-- ХП2: Для пациента с ID = 1 и датой приема '2023-11-15 10:00:00'
+CALL AppointmentDetails(1, '2023-11-15 10:00:00');
+
