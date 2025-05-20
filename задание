@@ -23,7 +23,7 @@ CREATE TABLE Patients (
     Login VARCHAR(25),
     Password VARCHAR(25),
     BirthDate DATE,
-    Photo VARBINARY(255) 
+    Photo LONGBLOB
 );
 
 -- Создание таблицы Услуг
