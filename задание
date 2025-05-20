@@ -51,39 +51,70 @@ GO
 
 -- Создание таблицы Пациентов
 CREATE TABLE Patients (
-    PatientID INT IDENTITY(1,1) PRIMARY KEY,
-    LastName NVARCHAR(50) NOT NULL,
-    FirstName NVARCHAR(50) NOT NULL,
-    Email NVARCHAR(100) UNIQUE NOT NULL,
-    Password NVARCHAR(100) NOT NULL,
-    BirthDate DATE NOT NULL,
-    Photo VARBINARY(MAX) NULL
+    PatientID INT  PRIMARY KEY AUTO_INCREMENT,
+    LastName VARCHAR(25),
+    FirstName VARCHAR(25),
+    Email VARCHAR(25),
+    Password VARCHAR(25),
+    BirthDate DATE,
+    Photo VARBINARY(255) 
 );
 
 -- Создание таблицы Услуг
 CREATE TABLE Services (
-    ServiceID INT IDENTITY(1,1) PRIMARY KEY,
-    ServiceName NVARCHAR(100) NOT NULL,
-    Price DECIMAL(10, 2) NOT NULL
+    ServiceID INT  PRIMARY KEY auto_increment,
+    ServiceName VARCHAR(25) NOT NULL,
+    Price int
 );
 
 -- Создание таблицы Приемов
 CREATE TABLE Appointments (
-    AppointmentID INT IDENTITY(1,1) PRIMARY KEY,
+    AppointmentID INT PRIMARY KEY auto_increment,
     AppointmentDate DATETIME NOT NULL,
     PatientID INT NOT NULL,
-    Diagnosis NVARCHAR(MAX) NULL,
-    Prescription NVARCHAR(MAX) NULL,
+    Diagnosis VARCHAR(25) NULL,
+    Prescription VARCHAR(25) NULL,
     FOREIGN KEY (PatientID) REFERENCES Patients(PatientID)
 );
 
 -- Создание связующей таблицы для услуг в приемах
 CREATE TABLE AppointmentServices (
-    AppointmentServiceID INT IDENTITY(1,1) PRIMARY KEY,
-    AppointmentID INT NOT NULL,
-    ServiceID INT NOT NULL,
+    AppointmentServiceID INT PRIMARY KEY AUTO_INCREMENT,
+    AppointmentID INT,
+    ServiceID INT,
     FOREIGN KEY (AppointmentID) REFERENCES Appointments(AppointmentID),
-    FOREIGN KEY (ServiceID) REFERENCES Services(ServiceID),
-    UNIQUE (AppointmentID, ServiceID)
+    FOREIGN KEY (ServiceID) REFERENCES Services(ServiceID)
 );
+
+
+-- Заполнение таблицы Patients
+INSERT INTO Patients (LastName, FirstName, Email, Password, BirthDate) VALUES
+('Иванов', 'Иван', 'ivanov@example.com', 'password123', '1990-05-15'),
+('Петрова', 'Елена', 'petrova@example.com', 'securePass', '1985-10-20'),
+('Сидоров', 'Алексей', 'sidorov@example.com', 'mySecret', '1992-03-01');
+
+-- Заполнение таблицы Services
+INSERT INTO Services (ServiceName, Price) VALUES
+('Консультация терапевта', 1500),
+('Анализ крови', 800),
+('УЗИ брюшной полости', 2000),
+('ЭКГ', 1000);
+
+-- Заполнение таблицы Appointments
+INSERT INTO Appointments (AppointmentDate, PatientID, Diagnosis, Prescription) VALUES
+('2023-11-15 10:00:00', 1, 'ОРВИ', 'Антибиотики'),
+('2023-11-15 11:30:00', 2, 'Гастрит', 'Омепразол'),
+('2023-11-16 09:00:00', 3, 'Мигрень', 'Ибупрофен'),
+('2023-11-16 14:00:00', 1, 'Повышенное давление', 'Каптоприл');
+
+-- Заполнение таблицы AppointmentServices
+INSERT INTO AppointmentServices (AppointmentID, ServiceID) VALUES
+(1, 1), -- Прием 1: Консультация терапевта
+(1, 2), -- Прием 1: Анализ крови
+(2, 1), -- Прием 2: Консультация терапевта
+(2, 3), -- Прием 2: УЗИ брюшной полости
+(3, 1), -- Прием 3: Консультация терапевта
+(3, 4), -- Прием 3: ЭКГ
+(4,1), -- Прием 4: Консультация терапевта
+(4,2); -- Прием 4: Анализ крови
 
