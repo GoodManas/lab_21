@@ -12,3 +12,8 @@ class QwerSql():
         print('avtarizovan')
         cur.close()
         return data
+    
+    def get_data():
+        cur = db.cursor()
+        cur.execute("SELECT PatientID, LastName, Photo FROM Patients")
+        return cur.fetchall() 

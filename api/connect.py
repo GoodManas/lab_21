@@ -6,7 +6,7 @@ try:
         host = 'localhost',
         user ='root',
         password = '',
-        database = 'ali_15_16_17'
+        database = 'Ali_21'
     )
     print('Connection ok')
     con.close()
