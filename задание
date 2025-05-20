@@ -20,6 +20,7 @@ CREATE TABLE Patients (
     LastName VARCHAR(25),
     FirstName VARCHAR(25),
     Email VARCHAR(25),
+    Login VARCHAR(25),
     Password VARCHAR(25),
     BirthDate DATE,
     Photo VARBINARY(255) 
@@ -53,10 +54,10 @@ CREATE TABLE AppointmentServices (
 
 
 -- Заполнение таблицы Patients
-INSERT INTO Patients (LastName, FirstName, Email, Password, BirthDate) VALUES
-('Иванов', 'Иван', 'ivanov@example.com', 'password123', '1990-05-15'),
-('Петрова', 'Елена', 'petrova@example.com', 'securePass', '1985-10-20'),
-('Сидоров', 'Алексей', 'sidorov@example.com', 'mySecret', '1992-03-01');
+INSERT INTO Patients (LastName, FirstName, Email, Login, Password, BirthDate) VALUES
+('Иванов', 'Иван', 'ivanov@example.com', '1', '1', '1990-05-15'),
+('Петрова', 'Елена', 'petrova@example.com', 'alisher', 'alisher', '1985-10-20'),
+('Сидоров', 'Алексей', 'sidorov@example.com', 'ali', 'ali', '1992-03-01');
 
 -- Заполнение таблицы Services
 INSERT INTO Services (ServiceName, Price) VALUES
