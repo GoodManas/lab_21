@@ -3,45 +3,10 @@
 ХП1 выводит: фото, фамилию, имя, почту, дата рождения пациента, дату приема, количество оказанных услуг, общую стоимость по оказанным услугам (в один день может быть оказано несколько услуг).
 ХП 2 выводит: по дате приема, для указанного клиента - название  услугу, стоимость услуги, рецепт, диагноз
 
-CREATE PROCEDURE GetPatientAppointmentDetails
-    @PatientID INT
-AS
-BEGIN
-    SELECT 
-        p.Photo,
-        p.LastName AS 'Фамилия',
-        p.FirstName AS 'Имя',
-        p.Email AS 'Почта',
-        p.BirthDate AS 'Дата рождения',
-        a.AppointmentDate AS 'Дата приема',
-        COUNT(s.ServiceID) AS 'Количество услуг',
-        SUM(s.Price) AS 'Общая стоимость'
-    FROM 
-        Patients p
-    JOIN 
-        Appointments a ON p.PatientID = a.PatientID
-    LEFT JOIN 
-        AppointmentServices asp ON a.AppointmentID = asp.AppointmentID
-    LEFT JOIN 
-        Services s ON asp.ServiceID = s.ServiceID
-    WHERE 
-        p.PatientID = @PatientID
-    GROUP BY 
-        p.Photo,
-        p.LastName,
-        p.FirstName,
-        p.Email,
-        p.BirthDate,
-        a.AppointmentDate,
-        a.AppointmentID
-    ORDER BY 
-        a.AppointmentDate DESC;
-END;
-
 Пациент (Фамилия, Имя, почта, пароль, дата рождения, фото) Услуга (название, стоимость) Прием (дата приема, услуга, клиент, рецепт, диагноз) 
 создать бд
 
-
+##########################################################################################################################################################################################################
 -- Создание базы данных
 CREATE DATABASE MedicalClinic;
 GO
