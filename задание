@@ -42,3 +42,48 @@ END;
 создать бд
 
 
+-- Создание базы данных
+CREATE DATABASE MedicalClinic;
+GO
+
+USE MedicalClinic;
+GO
+
+-- Создание таблицы Пациентов
+CREATE TABLE Patients (
+    PatientID INT IDENTITY(1,1) PRIMARY KEY,
+    LastName NVARCHAR(50) NOT NULL,
+    FirstName NVARCHAR(50) NOT NULL,
+    Email NVARCHAR(100) UNIQUE NOT NULL,
+    Password NVARCHAR(100) NOT NULL,
+    BirthDate DATE NOT NULL,
+    Photo VARBINARY(MAX) NULL
+);
+
+-- Создание таблицы Услуг
+CREATE TABLE Services (
+    ServiceID INT IDENTITY(1,1) PRIMARY KEY,
+    ServiceName NVARCHAR(100) NOT NULL,
+    Price DECIMAL(10, 2) NOT NULL
+);
+
+-- Создание таблицы Приемов
+CREATE TABLE Appointments (
+    AppointmentID INT IDENTITY(1,1) PRIMARY KEY,
+    AppointmentDate DATETIME NOT NULL,
+    PatientID INT NOT NULL,
+    Diagnosis NVARCHAR(MAX) NULL,
+    Prescription NVARCHAR(MAX) NULL,
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID)
+);
+
+-- Создание связующей таблицы для услуг в приемах
+CREATE TABLE AppointmentServices (
+    AppointmentServiceID INT IDENTITY(1,1) PRIMARY KEY,
+    AppointmentID INT NOT NULL,
+    ServiceID INT NOT NULL,
+    FOREIGN KEY (AppointmentID) REFERENCES Appointments(AppointmentID),
+    FOREIGN KEY (ServiceID) REFERENCES Services(ServiceID),
+    UNIQUE (AppointmentID, ServiceID)
+);
+
