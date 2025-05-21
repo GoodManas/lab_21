@@ -13,7 +13,7 @@ con = pymysql.connect(
 
 def get_patients():
     with con.cursor() as cursor:
-        cursor.execute("SELECT PatientID, LastName, FirstName, Email, BirthDate, Photo FROM Patient;")
+        cursor.execute("SELECT PatientID, LastName, FirstName, Email, BirthDate, Photo FROM Patients;")
         return cursor.fetchall()
 
 def get_appointments(patient_id):
